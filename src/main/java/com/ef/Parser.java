@@ -116,14 +116,14 @@ public class Parser {
      * @param commandLineArgumentMap
      */
     private static void setAccessLogLocation(Map<String, String> commandLineArgumentMap){
-        ClassPathResource classPathResource = new ClassPathResource(defaultAccessLogLocation);
-        try{
+//        ClassPathResource classPathResource = new ClassPathResource(defaultAccessLogLocation);
+//        try{
             if(!commandLineArgumentMap.containsKey(accessLog)){
-                commandLineArgumentMap.put(accessLog, classPathResource.getFile().getAbsolutePath());
+                commandLineArgumentMap.put(accessLog, defaultAccessLogLocation);
             }
-        } catch (IOException exception){
-            log.error("File Not Found", exception);
-        }
+//        } catch (IOException exception){
+//            log.error("File Not Found", exception);
+//        }
 
     }
 

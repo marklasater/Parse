@@ -6,6 +6,7 @@ import com.ef.repository.IPAccessLogRepository;
 import com.ef.service.ParserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -67,14 +68,14 @@ public class ParserServiceImpl implements ParserService {
      */
     private List<IPAccesLogEntity> parseLogFile(String logFileLocation){
         try{
-            BufferedReader br = new BufferedReader(new FileReader(URLDecoder.decode(logFileLocation, "UTF-8")));
+            BufferedReader bufferedReader = new BufferedReader(getStream(logFileLocation));
 
-            String currentLine = br.readLine();
+            String currentLine = bufferedReader.readLine();
             List<IPAccesLogEntity> ipAccesLogEntities = new ArrayList<>();
             while(currentLine != null){
                 Optional<IPAccesLogEntity> ipAccesLogEntity = parseLogLine(currentLine);
                 ipAccesLogEntity.ifPresent(ipAccesLogEntities::add);
-                currentLine = br.readLine();
+                currentLine = bufferedReader.readLine();
             }
 
             return ipAccesLogEntities;
@@ -89,6 +90,30 @@ public class ParserServiceImpl implements ParserService {
         }
 
         return new ArrayList<>();
+    }
+
+    /**
+     * This method will return an {@link InputStreamReader} representing the file.
+     * The file can either be on the classpath or on the file system.
+     *
+     * @param logFileLocation
+     * @return
+     */
+    private InputStreamReader getStream(String logFileLocation){
+        try{
+            return new InputStreamReader(new FileInputStream(URLDecoder.decode(logFileLocation, "UTF-8")));
+        } catch (Exception e){
+           log.info("The file is not on the file system.  Will check the classpath: " + logFileLocation);
+        }
+
+        try{
+            return new InputStreamReader(new ClassPathResource(logFileLocation).getInputStream());
+        } catch (Exception e){
+            log.info("The not on the classpath and not on the file system: " + logFileLocation);
+
+        }
+
+        throw new LogException("Log file not found " + logFileLocation);
     }
 
     /**

@@ -26,7 +26,7 @@ public class IPAccessLogViolation {
     public String toString() {
         String result = ipAddress + " was logged " + count + " time(s) on " + month + "/"+ day +"/" + year;
         if(hour >= 0){
-            result = result + "during " + hour + ":00";
+            result = result + " during " + hour + ":00";
         }
         return result;
     }
