@@ -10,6 +10,9 @@
 # Deviations
 * Spring boot was used to create this application.  Based off how Spring boot packages the executable jar there is a slight deviation in the way to run the jar. You need to use `-jar` instead of `-cp`
 
+# Future work
+* If more time was spent on the project, I'd focus on creating unit tests
+
 # Run Application
 
 ### In Memory Database
