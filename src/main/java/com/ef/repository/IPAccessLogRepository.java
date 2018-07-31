@@ -16,13 +16,15 @@ public interface IPAccessLogRepository extends JpaRepository<IPAccesLogEntity, S
     @Query("select new com.ef.model.IPAccessLogViolation(ipAccessLog.ipAddress as ipAddress, count(*) as count, YEAR(ipAccessLog.date), MONTH(ipAccessLog.date), DAY(ipAccessLog.date), HOUR(ipAccessLog.date)) from IPAccesLogEntity ipAccessLog " +
             "where ipAccessLog.date > :date " +
             "group by YEAR(ipAccessLog.date),MONTH(ipAccessLog.date), DAY(ipAccessLog.date), HOUR(ipAccessLog.date), ipAccessLog.ipAddress " +
-            "having count(ipAccessLog.ipAddress) > :threshold")
+            "having count(ipAccessLog.ipAddress) > :threshold " +
+            "order by HOUR(ipAccessLog.date) asc")
     List<IPAccessLogViolation> getHourlyViolatorsBasedOnStartTimeAndThreshold(@Param("date") Date date, @Param("threshold") Long threshold);
 
     @Query("select new com.ef.model.IPAccessLogViolation(ipAccessLog.ipAddress as ipAddress, count(*) as count, YEAR(ipAccessLog.date), MONTH(ipAccessLog.date), DAY(ipAccessLog.date)) from IPAccesLogEntity ipAccessLog " +
             "where ipAccessLog.date > :date " +
             "group by YEAR(ipAccessLog.date),MONTH(ipAccessLog.date), DAY(ipAccessLog.date), ipAccessLog.ipAddress " +
-            "having count(ipAccessLog.ipAddress) > :threshold")
+            "having count(ipAccessLog.ipAddress) > :threshold " +
+            "order by DAY(ipAccessLog.date)")
     List<IPAccessLogViolation> getDailyViolatorsBasedOnStartTimeAndThreshold(@Param("date") Date date, @Param("threshold") Long threshold);
 
 }
