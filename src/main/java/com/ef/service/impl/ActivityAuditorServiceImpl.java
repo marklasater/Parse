@@ -24,9 +24,9 @@ public class ActivityAuditorServiceImpl implements ActivityAuditorService {
 
     public  List<IPAccessLogViolation> findViolators(Date startDate, String duration, Long threshold) {
 
-        if(DAILY_VIOLATION.equals(duration.toLowerCase())){
+        if(HOURLY_VIOLATION.equals(duration.toLowerCase())){
             return ipAccessLogRepository.getHourlyViolatorsBasedOnStartTimeAndThreshold(startDate, threshold);
-        } else if(HOURLY_VIOLATION.equals(duration.toLowerCase())){
+        } else if(DAILY_VIOLATION.equals(duration.toLowerCase())){
              return ipAccessLogRepository.getDailyViolatorsBasedOnStartTimeAndThreshold(startDate, threshold);
         }
 
