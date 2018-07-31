@@ -1,6 +1,5 @@
 package com.ef.service.impl;
 
-import com.ef.model.IPAccesLogEntity;
 import com.ef.model.IPAccessLogViolation;
 import com.ef.repository.IPAccessLogRepository;
 import com.ef.service.ActivityAuditorService;
