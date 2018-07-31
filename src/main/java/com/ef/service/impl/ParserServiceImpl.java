@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.net.URLDecoder;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,17 +25,6 @@ import java.util.regex.Pattern;
 public class ParserServiceImpl implements ParserService {
 
     private IPAccessLogRepository ipAccessLogRepository;
-
-    @Value("${command.line.required.arguments.startDate}")
-    private String START_DATE;
-    @Value("${command.line.arguments.accesslog}")
-    private  String ACCESS_LOG_LOCATION;
-    @Value("${command.line.required.arguments.threshold}")
-    private  String THRESHOLD;
-    @Value("${command.line.required.arguments.duration}")
-    private  String DURATION;
-    @Value("${command.line.required.arguments.duration}")
-    private  String DEFAULT_ACCESS_LOG_LOCATION;
 
     @Value("${log.file.delimiter}")
     private  String DEFAULT_LOG_DELIMITER;
@@ -77,7 +67,7 @@ public class ParserServiceImpl implements ParserService {
      */
     private List<IPAccesLogEntity> parseLogFile(String logFileLocation){
         try{
-            BufferedReader br = new BufferedReader(new FileReader(logFileLocation));
+            BufferedReader br = new BufferedReader(new FileReader(URLDecoder.decode(logFileLocation, "UTF-8")));
 
             String currentLine = br.readLine();
             List<IPAccesLogEntity> ipAccesLogEntities = new ArrayList<>();

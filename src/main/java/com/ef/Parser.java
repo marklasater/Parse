@@ -11,7 +11,9 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -114,9 +116,15 @@ public class Parser {
      * @param commandLineArgumentMap
      */
     private static void setAccessLogLocation(Map<String, String> commandLineArgumentMap){
-        if(!commandLineArgumentMap.containsKey(accessLog)){
-            commandLineArgumentMap.put(accessLog, defaultAccessLogLocation);
+        ClassPathResource classPathResource = new ClassPathResource(defaultAccessLogLocation);
+        try{
+            if(!commandLineArgumentMap.containsKey(accessLog)){
+                commandLineArgumentMap.put(accessLog, classPathResource.getFile().getAbsolutePath());
+            }
+        } catch (IOException exception){
+            log.error("File Not Found", exception);
         }
+
     }
 
 }
